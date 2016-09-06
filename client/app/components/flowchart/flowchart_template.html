@@ -2,7 +2,8 @@
   class="draggable-container"
   xmlns="http://www.w3.org/2000/svg"
   ng-mousedown="mouseDown($event)"
-  ng-mousemove="mouseMove($event)"  
+  ng-mousemove="mouseMove($event)"
+  style-="z-index: 100000;"
   >
 
   <!-- Connection Mode Notification -->
@@ -39,7 +40,7 @@
       />
 
     <!-- Bottom Node Toolbar -->
-    <g id="nodeToolBar" ng-if="node == mouseOverNode && !inConnectingMode">
+    <g id="nodeToolBar" ng-if="!inConnectingMode">
       <rect   class="node-toolbar"
               ry="6"
               rx="6"
@@ -64,7 +65,33 @@
               ng-attr-y="{{node.height()+22}}">
           {{nodeAction.fontContent()}}
         </text>
-      </g>
+        <foreignobject ng-if="nodeAction.name() === 'tag'" ng-attr-x="{{-134 + ($index * 24)}}" ng-attr-y="{{node.height()+34}}" ng-mousedown="$event.stopPropagation()" >
+          <body>
+            <blueprint-dialog node="node" node-action="nodeAction" >
+              <h3 class="dialog-header">VMware Tags</h3>
+              <div>
+                <select >
+                  <option value="" disabled selected>Select category</option>
+                  <option value="1">first option</option>
+                  <option value="2">second option</option>
+                </select>
+                <select ph="Select value">
+                  <option>first option</option>
+                  <option>second option</option>
+                  <option>third option</option>
+                </select>
+                <span style="font-size: 14px;">+</span>
+              </div>
+            </blueprint-dialog>
+          </body>
+        </foreignObject>
+        <foreignobject ng-if="nodeAction.name() === 'edit'" ng-attr-x="{{-132 + ($index * 24)}}" ng-attr-y="{{node.height()+34}}">
+          <body>
+            <blueprint-dialog node="node" node-action="nodeAction" >
+              <div><img src="assets/itemdetails.png"/></div>
+            </blueprint-dialog>
+          </body>
+        </foreignObject>
     </g>
 
     <!-- Node Title -->
@@ -165,6 +192,8 @@
         />
         <text
               class="connector-tooltip-text"
+              ng-attr-x="{{connector.x() + 2}}"
+              ng-attr-x="{{connector.x() + 2}}"
               ng-attr-x="{{connector.x() + 2}}"
               ng-attr-y="{{connector.y() + 26}}"
               text-anchor="start"

@@ -288,6 +288,12 @@ angular.module('flowChart', ['dragging'] )
     if (nodeAction.name() === "connect") {
       $scope.startConnectingMode(node);
     }
+    if(node.selectedAction === nodeAction.name()) {
+      // Toggle selected action if it was already selected
+      node.selectedAction = undefined;
+    } else {
+      node.selectedAction = nodeAction.name();
+    }
   };
 
   $scope.inConnectingMode = false;
